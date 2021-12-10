@@ -42,17 +42,12 @@ export default async function handleRequest(
     remixContext.manifest
   );
   for (let link of links) {
-    if (link.href && link.rel && link.as) {
-      let url = new URL(link.href, request.url);
-      response.headers.append(
-        "Link",
-        `<${url.toString()}>; rel=${link.rel}; as=${link.as}`
-      );
+    if (link.as === "style") {
+      response.headers.append("Link", `<${link.href}>; rel=preload; as=style`);
     }
   }
   for (let link of moduleLinks) {
-    let url = new URL(link, request.url);
-    response.headers.append("Link", `<${url.toString()}>; rel=modulepreload`);
+    response.headers.append("Link", `<${link.href}>; rel=modulepreload`);
   }
 
   await new Promise(resolve => {

@@ -31,8 +31,8 @@ export async function loader({ params }) {
     return json(null, { status: 404 });
   }
 
-  return fakeGists;
   if (process.env.NODE_ENV === "test") {
+    return fakeGists;
   }
 
   let response = await fetch(`https://api.github.com/users/${username}/gists`);
